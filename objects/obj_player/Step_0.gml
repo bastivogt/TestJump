@@ -4,7 +4,7 @@
 
 
 
-
+//show_debug_message(speed);
 
 hspeed = 0;
 vspeed += 1;
@@ -12,7 +12,7 @@ vspeed += 1;
 platform_buffer -= 1;
 jump_buffer -= 1;
 
-var fast_jump_pad = (gamepad_button_check(obj_game_manager.pad_num, gp_padr) || gamepad_button_check(obj_game_manager.pad_num, gp_padr)) && (gamepad_button_check(obj_game_manager.pad_num, gp_face1) && gamepad_button_check_pressed(obj_game_manager.pad_num, gp_face4));
+var fast_jump_pad = (gamepad_button_check(obj_game_manager.pad_num, gp_padr) || gamepad_button_check(obj_game_manager.pad_num, gp_padl)) && (gamepad_button_check(obj_game_manager.pad_num, gp_face1) && gamepad_button_check_pressed(obj_game_manager.pad_num, gp_face4));
 var fast_jump = (keyboard_check(vk_right) || keyboard_check(vk_right)) && (keyboard_check(vk_space) && keyboard_check_pressed(vk_up));
 
 if(platform_buffer < 0) {
@@ -39,7 +39,7 @@ if(keyboard_check(vk_right) || gamepad_button_check(obj_game_manager.pad_num, gp
 }
 
 if(keyboard_check(vk_left) || gamepad_button_check(obj_game_manager.pad_num, gp_padl)) {
-	face_direction = -1;
+
 	hspeed = -obj_settings._player_speed;
 }
 
@@ -59,7 +59,15 @@ if(hspeed > 0) {
 	face_direction = -1;	
 }
 
-show_debug_message(face_direction);
+// sprite animation für run und stehen
+if(hspeed == 0) {
+	sprite_set_speed(spr_boy, 0, sprite_get_speed_type(spr_boy));
+
+}else {
+	sprite_set_speed(spr_boy, sprite_speed_, sprite_get_speed_type(spr_boy));
+}
+
+
 
 
 image_xscale = face_direction;

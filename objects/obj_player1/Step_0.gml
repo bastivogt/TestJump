@@ -1,4 +1,9 @@
 /// @description Hier Beschreibung einfügen
+// Sie können Ihren Code in diesem Editor schreiben
+
+
+
+
 //show_debug_message(speed);
 
 hspeed = 0;
@@ -7,23 +12,10 @@ vspeed += 1;
 platform_buffer -= 1;
 jump_buffer -= 1;
 
-// Keyboard Steuerung
-var key_left = keyboard_check(vk_left);
-var key_right = keyboard_check(vk_right);
-var key_up_pressed = keyboard_check_pressed(vk_up);
-var key_ctrl = keyboard_check(vk_control);
+var fast_jump_pad = (gamepad_button_check(obj_game_manager.pad_num, gp_padr) || gamepad_button_check(obj_game_manager.pad_num, gp_padl)) && (gamepad_button_check(obj_game_manager.pad_num, gp_face1) && gamepad_button_check_pressed(obj_game_manager.pad_num, gp_face4));
+var fast_jump = (keyboard_check(vk_left) || keyboard_check(vk_right)) && (keyboard_check(vk_space) && keyboard_check_pressed(vk_up));
 
-// Pad Steuerung
-var pad_left = gamepad_button_check(obj_game_manager.pad_num, gp_padl);
-var pad_right = gamepad_button_check(obj_game_manager.pad_num, gp_padr);
-var pad_jump_pressed = gamepad_button_check_pressed(obj_game_manager.pad_num, gp_face4);
-var pad_fire = gamepad_button_check(obj_game_manager.pad_num, gp_face1);
-//var pad_fire_pressed = gamepad_button_check_pressed(obj_game_manager.pad_num, gp_face1);
-
-var fast_jump_pad = (pad_left || pad_right) && (pad_fire && pad_jump_pressed);
-var fast_jump = (key_left || key_right) && (key_ctrl && key_up_pressed);
-
-
+show_debug_message(fast_jump);
 
 
 if(platform_buffer < 0) {
@@ -33,7 +25,7 @@ if(jump_buffer < 0) {
 	jump_buffer = 0;
 }
 
-if(key_up_pressed || pad_jump_pressed) {
+if(keyboard_check_pressed(vk_up) || gamepad_button_check_pressed(obj_game_manager.pad_num, gp_face4)) {
 	jump_buffer = obj_settings._jump_buffer_size;
 }
 
@@ -44,22 +36,22 @@ if(!place_free(x, y + 1)) {
 
 
 
-if(key_right || pad_right) {
+if(keyboard_check(vk_right) || gamepad_button_check(obj_game_manager.pad_num, gp_padr)) {
 
 	hspeed = obj_settings._player_speed;
 }
 
-if(key_left || pad_left) {
+if(keyboard_check(vk_left) || gamepad_button_check(obj_game_manager.pad_num, gp_padl)) {
 
 	hspeed = -obj_settings._player_speed;
 }
 
 // fast speed run
-if((key_right || pad_right) && (key_ctrl || pad_fire)) {
+if((keyboard_check(vk_right) && keyboard_check(vk_space)) || (gamepad_button_check(obj_game_manager.pad_num, gp_padr) && gamepad_button_check(obj_game_manager.pad_num, gp_face1))) {
 	hspeed = obj_settings._player_fast_speed;
 }
 
-if((key_left || pad_left) && (key_ctrl || pad_fire)) {
+if((keyboard_check(vk_left) && keyboard_check(vk_space)) || (gamepad_button_check(obj_game_manager.pad_num, gp_padl) && gamepad_button_check(obj_game_manager.pad_num, gp_face1))) {
 	hspeed = -obj_settings._player_fast_speed;
 }
 
@@ -88,14 +80,22 @@ if(vspeed < 1) {
 }
 
 
-// Blickrichtung gleich laufrichtung
+
 image_xscale = face_direction;
 
+
 // Jump
+/*if(keyboard_check_pressed(vk_up)) {
+	if(!place_free(x, y + 1)) {
+		vspeed = -20;
+	}
+	
+}*/
+
 if(jump_buffer > 0) {
 	if(platform_buffer > 0) {
 		audio_play_sound(snd_player_jump, 10, 0);
-		if(fast_jump || fast_jump_pad) {
+		if(fast_jump_pad || fast_jump) {
 			vspeed = -obj_settings._player_fast_jump_height;
 		}else {
 			vspeed = -obj_settings._player_jump_height;

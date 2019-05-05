@@ -20,6 +20,8 @@ var pad_jump_pressed = gamepad_button_check_pressed(obj_game_manager.pad_num, gp
 var pad_fire = gamepad_button_check(obj_game_manager.pad_num, gp_face1);
 //var pad_fire_pressed = gamepad_button_check_pressed(obj_game_manager.pad_num, gp_face1);
 
+var fast_run_pad = (pad_left || pad_right) && pad_fire;
+var fast_run = (key_left || key_right) && key_ctrl;
 var fast_jump_pad = (pad_left || pad_right) && (pad_fire && pad_jump_pressed);
 var fast_jump = (key_left || key_right) && (key_ctrl && key_up_pressed);
 
@@ -57,10 +59,14 @@ if(key_left || pad_left) {
 // fast speed run
 if((key_right || pad_right) && (key_ctrl || pad_fire)) {
 	hspeed = obj_settings._player_fast_speed;
+
+
 }
 
 if((key_left || pad_left) && (key_ctrl || pad_fire)) {
 	hspeed = -obj_settings._player_fast_speed;
+
+
 }
 
 // face direction
@@ -76,15 +82,23 @@ if(hspeed == 0) {
 	image_index = 1;
 
 }else {
-	sprite_set_speed(spr_boy, sprite_speed_, sprite_get_speed_type(spr_boy));
+	if(fast_run_pad || fast_run) {
+		sprite_set_speed(spr_boy, sprite_speed_ * 2, sprite_get_speed_type(spr_boy));
+	}else {
+		sprite_set_speed(spr_boy, sprite_speed_, sprite_get_speed_type(spr_boy));	
+	}
 }
 
 // sprite image für jump
-if(vspeed < 1) {
+if(vspeed < 1 || place_free(x + hspeed, y + vspeed)) {
 	sprite_set_speed(spr_boy, 0, sprite_get_speed_type(spr_boy));
 	image_index = 4;
 }else {
-	sprite_set_speed(spr_boy, sprite_speed_, sprite_get_speed_type(spr_boy));	
+	if(fast_run_pad || fast_run) {
+		sprite_set_speed(spr_boy, sprite_speed_ * 2, sprite_get_speed_type(spr_boy));
+	}else {
+		sprite_set_speed(spr_boy, sprite_speed_, sprite_get_speed_type(spr_boy));	
+	}
 }
 
 

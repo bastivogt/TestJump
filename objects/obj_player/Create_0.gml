@@ -10,3 +10,4 @@ pad_num = 0;
 face_direction = 1;
 
 sprite_speed_ = 50;
+

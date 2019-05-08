@@ -13,17 +13,38 @@ var key_right = keyboard_check(vk_right);
 var key_up_pressed = keyboard_check_pressed(vk_up);
 var key_ctrl = keyboard_check(vk_control);
 
-// Pad Steuerung
-var pad_left = gamepad_button_check(obj_game_manager.pad_num, gp_padl);
-var pad_right = gamepad_button_check(obj_game_manager.pad_num, gp_padr);
-var pad_jump_pressed = gamepad_button_check_pressed(obj_game_manager.pad_num, gp_face4);
-var pad_fire = gamepad_button_check(obj_game_manager.pad_num, gp_face1);
-//var pad_fire_pressed = gamepad_button_check_pressed(obj_game_manager.pad_num, gp_face1);
 
-var fast_run_pad = (pad_left || pad_right) && pad_fire;
+
+
+// Pad Steuerung
+var pad_left = 0;
+var pad_right = 0;
+var pad_jump_pressed = 0;
+var pad_fire = 0;
+var pad_fire_pressed = 0;
+
+var fast_run_pad = 0;
 var fast_run = (key_left || key_right) && key_ctrl;
-var fast_jump_pad = (pad_left || pad_right) && (pad_fire && pad_jump_pressed);
+var fast_jump_pad = 0;
 var fast_jump = (key_left || key_right) && (key_ctrl && key_up_pressed);
+
+
+
+if(obj_game_manager.pad_num !=undefined) {
+	pad_left = gamepad_button_check(obj_game_manager.pad_num, gp_padl);
+	pad_right = gamepad_button_check(obj_game_manager.pad_num, gp_padr);
+	pad_jump_pressed = gamepad_button_check_pressed(obj_game_manager.pad_num, gp_face4);
+	pad_fire = gamepad_button_check(obj_game_manager.pad_num, gp_face1);
+
+
+	pad_fire_pressed = gamepad_button_check_pressed(obj_game_manager.pad_num, gp_face1);
+
+
+	fast_run_pad = (pad_left || pad_right) && pad_fire;
+	fast_jump_pad = (pad_left || pad_right) && (pad_fire && pad_jump_pressed);
+
+}
+
 
 
 
@@ -69,12 +90,6 @@ if((key_left || pad_left) && (key_ctrl || pad_fire)) {
 
 }
 
-// face direction
-/*if(hspeed > 0) {
-	face_direction = 1;
-}else if(hspeed < 0) {
-	face_direction = -1;	
-}*/
 
 if(hspeed != 0) {
 	face_direction = sign(hspeed);	

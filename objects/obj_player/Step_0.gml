@@ -30,7 +30,7 @@ var fast_jump = (key_left || key_right) && (key_ctrl && key_up_pressed);
 
 
 
-if(obj_game_manager.pad_num !=undefined) {
+if(obj_game_manager.pad_num != undefined) {
 	pad_left = gamepad_button_check(obj_game_manager.pad_num, gp_padl);
 	pad_right = gamepad_button_check(obj_game_manager.pad_num, gp_padr);
 	pad_jump_pressed = gamepad_button_check_pressed(obj_game_manager.pad_num, gp_face4);

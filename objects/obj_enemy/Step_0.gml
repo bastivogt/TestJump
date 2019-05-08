@@ -10,16 +10,20 @@ vspeed += 1;
 
 if(place_meeting(x, y, obj_enemy_border)) {
 
-	//hspeed = -hspeed;
+
 	hspeed = -hspeed;
 }
 
 
 
-if(hspeed > 0) {
+/*if(hspeed > 0) {
 	face_direction = 1;
 }else{
 	face_direction = -1;	
+}*/
+
+if(hspeed != 0) {
+	face_direction = sign(hspeed);
 }
 image_xscale = face_direction;
 

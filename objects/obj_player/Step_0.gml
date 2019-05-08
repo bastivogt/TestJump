@@ -70,10 +70,14 @@ if((key_left || pad_left) && (key_ctrl || pad_fire)) {
 }
 
 // face direction
-if(hspeed > 0) {
+/*if(hspeed > 0) {
 	face_direction = 1;
 }else if(hspeed < 0) {
 	face_direction = -1;	
+}*/
+
+if(hspeed != 0) {
+	face_direction = sign(hspeed);	
 }
 
 // sprite animation für run und stehen
